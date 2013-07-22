@@ -11,7 +11,7 @@ defmodule Euphony.Quark.Server do
   end
 
   def init([key, value]) do
-    :gproc.reg {:n, :l, {:quark, key}}
+    :gproc.add_local_name {:quark, key}
     {:ok, State.new(value: value, key: key)}
   end
 
