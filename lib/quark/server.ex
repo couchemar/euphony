@@ -12,6 +12,7 @@ defmodule Euphony.Quark.Server do
 
   def init([key, value]) do
     :gproc.add_local_name {:quark, key}
+    notify_create(key, value, 0)
     {:ok, State.new(value: value, key: key)}
   end
 
@@ -25,7 +26,7 @@ defmodule Euphony.Quark.Server do
                        value: old_value,
                        version: version] = state do
     new_version = version + 1
-    notify(key, old_value, value, new_version)
+    notify_update(key, old_value, value, new_version)
     {:reply, :ok, state.value(value).version(new_version)}
   end
 
@@ -35,15 +36,19 @@ defmodule Euphony.Quark.Server do
                        version: version] = state do
     if expected_value == old_value do
       new_version = version + 1
-      notify(key, old_value, value, new_version)
+      notify_update(key, old_value, value, new_version)
       {:reply, :ok, state.value(value).version(new_version)}
     else
       {:reply, :not_match, state}
     end
   end
 
-  defp notify(key, old_value, new_value, new_version) do
+  defp notify_update(key, old_value, new_value, new_version) do
     :gproc_ps.publish(:l, {:update, key}, {old_value, new_value, new_version})
+  end
+
+  defp notify_create(key, value, version) do
+    :gproc_ps.publish(:l, :create, {key, value, version})
   end
 
 end
