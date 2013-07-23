@@ -18,8 +18,8 @@ defmodule Euphony.Mixfile do
   # { :foobar, "0.1", git: "https://github.com/elixir-lang/foobar.git" }
   defp deps do
     [
-     {:gproc, git: "https://github.com/uwiger/gproc.git"},
-     {:genx, git: "https://github.com/yrashk/genx.git"}
+     {:gproc, github: "uwiger/gproc"},
+     {:genx, github: "yrashk/genx"}
     ]
   end
 end
