@@ -15,4 +15,11 @@ defmodule Euphony.Quark do
     end
   end
 
+  def cas(key, value, expected_value) do
+    case :gproc.lookup_local_name {:quark, key} do
+      :undefined -> :not_exists
+      pid -> Euphony.Quark.Server.compare_and_set pid, value, expected_value
+    end
+  end
+
 end

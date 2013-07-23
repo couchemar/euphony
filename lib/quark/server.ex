@@ -29,6 +29,19 @@ defmodule Euphony.Quark.Server do
     {:reply, :ok, state.value(value).version(new_version)}
   end
 
+  defcall compare_and_set(value, expected_value),
+          state: State[key: key,
+                       value: old_value,
+                       version: version] = state do
+    if expected_value == old_value do
+      new_version = version + 1
+      notify(key, old_value, value, new_version)
+      {:reply, :ok, state.value(value).version(new_version)}
+    else
+      {:reply, :not_match, state}
+    end
+  end
+
   defp notify(key, old_value, new_value, new_version) do
     :gproc_ps.publish(:l, {:update, key}, {old_value, new_value, new_version})
   end
