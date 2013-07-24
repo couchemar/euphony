@@ -18,7 +18,7 @@ defmodule QuarkTest do
     assert Euphony.Quark.cas(1, 6, 5) == :ok
     assert Euphony.Quark.get(1) == {6, 2}
 
-    assert Euphony.Quark.get(2) == :undefined
+    assert Euphony.Quark.get(2) == :not_exists
     assert Euphony.Quark.cas(2, 5, 5) == :not_exists
 
     assert Euphony.Quark.cas(1, 5, 5) == :not_match

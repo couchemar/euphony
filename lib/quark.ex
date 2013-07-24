@@ -10,7 +10,7 @@ defmodule Euphony.Quark do
 
   def get(key) do
     case :gproc.lookup_local_name {:quark, key} do
-      :undefined -> :undefined
+      :undefined -> :not_exists
       pid -> Euphony.Quark.Server.get pid
     end
   end
