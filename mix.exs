@@ -10,9 +10,12 @@ defmodule Euphony.Mixfile do
 
   # Configuration for the OTP application
   def application do
-    [mod: { Euphony, [] },
+    [mod: get_application(Mix.env),
      applications: [:gproc]]
   end
+
+  defp get_application(:test), do: []
+  defp get_application(_), do: {Euphony, []}
 
   # Returns the list of dependencies in the format:
   # { :foobar, "0.1", git: "https://github.com/elixir-lang/foobar.git" }

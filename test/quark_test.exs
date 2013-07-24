@@ -3,10 +3,10 @@ Code.require_file "test_helper.exs", __DIR__
 defmodule QuarkTest do
   use ExUnit.Case, async: true
 
-#  setup do
-#    :ok = Euphony.Quark.Supervisor.start_link
-#    :ok
-#  end
+  setup do
+    {:ok, _pid} = Euphony.Quark.Supervisor.start_link
+    :ok
+  end
 
   test "set get cas" do
     assert Euphony.Quark.set(1, 1) == :ok
