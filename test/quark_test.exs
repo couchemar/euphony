@@ -9,7 +9,11 @@ defmodule QuarkTest do
   end
 
   test "set get cas" do
-    assert Euphony.Quark.set(1, 1) == :ok
+    assert Euphony.Quark.set(1, 1) == :not_exists
+
+    assert {:ok, _pid} = Euphony.Quark.create(1, 1)
+    assert Euphony.Quark.create(1, 1) == :already_exists
+
     assert Euphony.Quark.get(1) == {1, 0}
 
     assert Euphony.Quark.set(1, 5) == :ok

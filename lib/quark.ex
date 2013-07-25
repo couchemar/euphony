@@ -1,11 +1,17 @@
 defmodule Euphony.Quark do
 
-  def set(key, value) do
+  def create(key, value) do
     case :gproc.lookup_local_name {:quark, key} do
       :undefined -> Euphony.Quark.Supervisor.create key, value
+      _pid -> :already_exists
+    end
+  end
+
+  def set(key, value) do
+    case :gproc.lookup_local_name {:quark, key} do
+      :undefined -> :not_exists
       pid -> Euphony.Quark.Server.set pid, value
     end
-    :ok
   end
 
   def get(key) do
