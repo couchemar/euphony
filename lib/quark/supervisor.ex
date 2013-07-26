@@ -14,4 +14,8 @@ defmodule Euphony.Quark.Supervisor do
     :supervisor.start_child __MODULE__, [key, value]
   end
 
+  def create(space, key, value) do
+    :supervisor.start_child __MODULE__, [space, key, value]
+  end
+
 end

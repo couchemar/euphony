@@ -10,8 +10,19 @@ defmodule Euphony.Quark.Server do
     :gen_server.start_link __MODULE__, [key, value], []
   end
 
+  def start_link(space, key, value) do
+    :gen_server.start_link __MODULE__, [space, key, value], []
+  end
+
   def init([key, value]) do
     :gproc.add_local_name {:quark, key}
+    notify_create(key, value, 0)
+    {:ok, State.new(value: value, key: key)}
+  end
+
+  def init([space, key, value]) do
+    :gproc.add_local_name {:quark, {space, key}}
+    :gproc.add_local_property {:space, space}, key
     notify_create(key, value, 0)
     {:ok, State.new(value: value, key: key)}
   end
